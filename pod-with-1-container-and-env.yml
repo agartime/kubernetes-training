@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-1-container-and-env
+spec:
+  containers:
+    - name: tomcat
+      image: tomcat:alpine
+      env:
+        - name: DATABASE_IP
+          value: server1
+      ports:
+      - containerPort: 80
+
