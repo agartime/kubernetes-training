@@ -206,3 +206,33 @@ To check our Replica Set:
 NAME                                     DESIRED   CURRENT   READY   AGE
 deployment-with-1-container-697bfb9dd7   2         2         2       3m7s
 ```
+
+If we modify our replica to 4:
+```
+[kubernetes@kubemaster projects]$ kubectl apply -f deployment-with-1-container.yml 
+deployment.apps/deployment-with-1-container configured
+[kubernetes@kubemaster projects]$ kubectl get pods
++NAME                                           READY   STATUS    RESTARTS   AGE
+deployment-with-1-container-697bfb9dd7-h4s97   1/1     Running   0          5m40s
+deployment-with-1-container-697bfb9dd7-hrmz4   1/1     Running   0          6s
+deployment-with-1-container-697bfb9dd7-jvd5r   1/1     Running   0          5m40s
+deployment-with-1-container-697bfb9dd7-qtztk   1/1     Running   0          6s
+```
+
+If we switch to 1 replica and apply, it takes care of everything:
+```
+[kubernetes@kubemaster projects]$ kubectl apply -f deployment-with-1-container.yml 
+deployment.apps/deployment-with-1-container configured
+[kubernetes@kubemaster projects]$ kubectl get pods
+NAME                                           READY   STATUS        RESTARTS   AGE
+deployment-with-1-container-697bfb9dd7-h4s97   0/1     Terminating   0          6m43s
+deployment-with-1-container-697bfb9dd7-hrmz4   0/1     Terminating   0          69s
+deployment-with-1-container-697bfb9dd7-jvd5r   1/1     Running       0          6m43s
+deployment-with-1-container-697bfb9dd7-qtztk   0/1     Terminating   0          69s
+[kubernetes@kubemaster projects]$ 
+[kubernetes@kubemaster projects]$ 
+[kubernetes@kubemaster projects]$ 
+[kubernetes@kubemaster projects]$ kubectl get pods
+NAME                                           READY   STATUS    RESTARTS   AGE
+deployment-with-1-container-697bfb9dd7-jvd5r   1/1     Running   0          6m49s
+```
