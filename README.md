@@ -423,4 +423,22 @@ You can make kubernetes to automatically upgrade your Pods and apply policies to
       maxUnavailable: 1 # How many pods allowed to not respond at max
 
 ```
+If maxSurge is 0, we should be ready to duplicate our whole infrastructure while performing an upgrade.
 
+We can use `--record` to tell kubernetes that it should save a picture (if it has to rollback f.i).
+
+```
+[kubernetes@kubemaster projects]$ kubectl apply -f deployment-with-1-container-limit-ranges.yml --record # Save a picture of what you do
+limitrange/limit-mem-cpu-per-pod configured
+deployment.apps/deployment-with-1-container created
+[kubernetes@kubemaster projects]$ kubectl get pods
+NAME                                           READY   STATUS    RESTARTS   AGE
+deployment-with-1-container-66d7d764fb-xlb8g   1/1     Running   0          19s
+deployment-with-1-container-66d7d764fb-zfxmf   1/1     Running   0          19s
+[kubernetes@kubemaster projects]$ kubectl rollout status deployment deployment-with-1-container 
+deployment "deployment-with-1-container" successfully rolled out
+[kubernetes@kubemaster projects]$ kubectl get pods
+NAME                                           READY   STATUS    RESTARTS   AGE
+deployment-with-1-container-66d7d764fb-xlb8g   1/1     Running   0          2m32s
+deployment-with-1-container-66d7d764fb-zfxmf   1/1     Running   0          2m32s
+```
