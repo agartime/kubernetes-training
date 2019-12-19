@@ -27,3 +27,10 @@ We can check that a node is correctly labeled by using:
 `kubectl describe node kubeminion1`
 
 `kubectl apply -f pod-to-node-selector.yml`
+
+```
+[kubernetes@kubemaster projects]$ kubectl get pods -o wide
+NAME              READY   STATUS    RESTARTS   AGE     IP          NODE          NOMINATED NODE   READINESS GATES
+pod-to-backend    1/1     Running   0          2m38s   10.47.0.1   kubeminion2   <none>           <none>
+pod-to-frontend   1/1     Running   0          2m38s   10.44.0.1   kubeminion1   <none>           <none>
+```
