@@ -236,3 +236,44 @@ deployment-with-1-container-697bfb9dd7-qtztk   0/1     Terminating   0          
 NAME                                           READY   STATUS    RESTARTS   AGE
 deployment-with-1-container-697bfb9dd7-jvd5r   1/1     Running   0          6m49s
 ```
+
+# Recovering from a replica problem
+
+Because we don't have a quota in our systems, if we change our replica to, let's say, 200 kubernetes will try to start them, resulting in our minions to fail and our cluster to be unstable. To solve the problem, we change the replica back to one and restart our minions. We're saved.
+
+# Limits
+
+We can make use of limits in order to be safe when we increase our replicas.
+
+```
+[kubernetes@kubemaster projects]$ cat deployment-with-1-container.yml 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-with-1-container
+  labels:
+    department: engineering
+spec:
+  replicas: 200
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: tomcat
+          image: tomcat:alpine
+          ports: 
+            - containerPort: 8080
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m" #Half a core
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+
+```
