@@ -112,4 +112,36 @@ pod-to-unknown-node   1/1     Running   0          7m34s   10.44.0.2   kubeminio
 [kubernetes@kubemaster projects]$ vi README.md 
 ```
 
+# Node Affinity
+Affinity is more flexible than node selector. It allow us to create rules to say in which nodes we would prefer to deploy our pods.
 
+There are two types: `requiredDuringSchedulingIgnoredDuringExecution` and `preferredDuringSchedulingIgnoredDuringExecution`. The first one is similar to node selector but much more verbose.
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-node-affinity
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/os
+            operator: In
+            values:
+            - linux
+            - mac
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 1
+          preference:
+            matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+              - kubeminion2
+  containers:
+  - name: nginx-with-node-affinity
+    image: nginx:latest
+``` 
