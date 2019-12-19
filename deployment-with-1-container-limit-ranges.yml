@@ -18,6 +18,11 @@ metadata:
 spec:
   replicas: 2
   minReadySeconds: 30
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1 #How many pods at the same time
+      maxUnavailable: 1 # How many pods allowed to not respond at max
   selector:
     matchLabels:
       app: frontend

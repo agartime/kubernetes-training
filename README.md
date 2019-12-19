@@ -410,3 +410,17 @@ deployment-with-1-container-78cdbf7bc5-z8psv   0/1     Pending   0          10m 
 deployment-with-1-container-78cdbf7bc5-zbxqf   0/1     Pending   0          10m   <none>      <none>        <none>           <none>
 ```
 
+# Update policy:
+You can make kubernetes to automatically upgrade your Pods and apply policies to say how many Pods will update from time to time, how many seconds to be considered as Ready when upgrading or rollbacking, etc.
+
+```
+ replicas: 2
+  minReadySeconds: 30
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1 #How many pods at the same time
+      maxUnavailable: 1 # How many pods allowed to not respond at max
+
+```
+
