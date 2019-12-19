@@ -1,0 +1,141 @@
+   42  kubectl get pods
+   88  kubectl apply -f pod-with-1-container-and-env.yml 
+   89  kubectl get pods
+   93  kubectl get pods
+   94  kubectl describe pods
+   95  kubectl describe pods pod-with-1-container-and-env 
+   96  kubectl get pods
+   97  kubectl exec -it pod-with-1-container-and-env env
+  110  kubectl exec -it pod-with-1-container-and-env sh
+  116  kubectl exec -it pod-with-1-container-and-env sh
+  117  kubectl get pods
+  128  kubectl apply -f pod-with-1-container-and-env-liveness.yml 
+  129  kubectl get pods
+  130  kubectl describe pods
+  131  kubectl get pods
+  137  kubectl exec -it -c tomcat pod-with-1-container-and-env
+  138  kubectl exec -it -c tomcat pod-with-1-container-and-env ls
+  140  kubectl logs
+  141  kubectl logs pod-with-1-container-and-env-and-liveness 
+  151  kubectl logs --timestamps=true pod-with-1-container-and-env
+  152  kubectl logs --timestamps=true pod-with-1-container-and-env-and-liveness 
+  153  kubectl exec -it pod-with-1-container-and-env-and-liveness sh
+  154  kubectl logs --timestamps=true pod-with-1-container-and-env-and-liveness -f
+  157  kubectl logs --timestamps=true pod-with-1-container-and-env-and-liveness -f
+  158  kubectl get pods -o wide
+  159  kubectl logs --timestamps=true -f pod-with-1-container-and-env-and-liveness 
+  163  kubectl get pods --watch
+  164  kubectl describe pods 
+  165  kubectl describe pods  --watch
+  166  kubectl describe pods --watch
+  167  kubectl get pods --watch
+  169  kubectl get pods
+  170  kubectl status
+  171  kubectl --help
+  172  kubectl cluster-info
+  182  kubectl get nodes
+  183  kubectl get pods
+  184  kubectl delete --all
+  185  kubectl delete pods --all 
+  186  kubectl get pods
+  187  kubectl get nodes
+  188  kubectl describe kubeminion1
+  189  kubectl describe node kubeminion1
+  192  kubectl label nodes kubeminion1 app=frontend
+  193  kubectl label nodes kubeminion2 app=backend
+  194  kubectl describe node kubeminion1
+  203  kubectl apply -f pod-to-node-selector.yml 
+  204  kubectl get nodes
+  205  kubectl get pods
+  212  kubectl get pods -o wide
+  218  kubectl apply -f pod-to-node-selector.yml
+  219  kubectl get pods -o wide
+  220  kubectl describe pod pod-to-unknown-node
+  227  kubectl label nodes kubeminion1 app=pakito --overwrite
+  228  kubectl get pods -o wide
+  238  kubectl apply -f pod-with-affinity.yml
+  239  kubectl get pods
+  240  kubectl get pods -o wide
+  254  kubectl delete pods --all
+  255  kubectl get pods
+  256  kubectl get pods ño wide
+  257  kubectl get pods -o wide
+  258  kubectl apply -f deployment-with-1-container.yml 
+  259  kubectl get pods -o wide
+  264  kubectl get deployments
+  266  kubectl get rs
+  274  kubectl apply -f deployment-with-1-container.yml 
+  275  kubectl get pods
+  279  kubectl get pods
+  280  kubectl apply -f deployment-with-1-container.yml 
+  282  kubectl get pods
+  292  kubectl apply -f deployment-with-1-container.yml 
+  293  kubectl get pods
+  295  kubectl apply -f deployment-with-1-container.yml 
+  296  kubectl get pods
+  297  kubectl get nodes
+  298  kubectl get pods
+  301  kubectl apply -f deployment-with-1-container.yml 
+  306  kubectl apply -f deployment-with-1-container.yml 
+  307  kubectl get pods
+  313  kubectl apply -f deployment-with-1-container.yml 
+  320  kubectl get nodes
+  321  kubectl get pods
+  322  kubectl get nodes
+  323  kubectl get pods --help
+  324  kubectl get pods
+  325  kubectl get pods --field-selector 'phase.state=Running'
+  326  kubectl get pods --field-selector 'status.phase=Running'
+  328  kubectl get pods --field-selector 'status.phase=Running'
+  330  kubectl get pods --field-selector 'status.phase=Running'
+  331  kubectl get pods
+  332  kubectl get pods --field-selector 'status.phase=Running'
+  333  kubectl get pods --field-selector 'status.phase=Error'
+  334  kubectl get pods --field-selector 'status.phase=Running'
+  335  kubectl get nodes
+  336  kubectl get nodes --watch
+  338  kubectl apply -f deployment-with-1-container.yml 
+  339  kubectl get nodes --watch
+  341  kubectl apply -f deployment-with-1-container.yml 
+  342  kubectl get nodes --watch
+  343  kubectl get pods
+  345  kubectl apply -f deployment-with-1-container.yml 
+  346  kubectl get pods
+  347  kubectl get pods --field-selector 'status.phase=Running'
+  358  cat kubectl.history 
+  360  rm kubectl.history 
+  362  kubectl get pods -o wide
+  367  kubectl get pods 
+  368  kubectl get pods -o wide
+  369  kubectl get pods --field-selector 'status.phase=Running'
+  370  kubectl get deployments
+  371  kubectl delete deployments "deployment-with-1-container"
+  372  kubectl get deployments
+  373  kubectl get pods
+  374  kubectl get rs
+  375  kubectl get nodes
+  385  kubectl get pods
+  400  kubectl apply -f deployment-with-1-container-limit-ranges.yml 
+  404  kubectl apply -f deployment-with-1-container-limit-ranges.yml 
+  405  kubectl get pods
+  406  kubectl delete deployments deployment-with-1-container
+  407  kubectl get pods
+  409  kubectl apply -f deployment-with-1-container-limit-ranges.yml --record # Save a picture of what you do
+  410  kubectl get pods
+  411  kubectl rollout status deployment deployment-with-1-container 
+  412  kubectl get pods
+  419  kubectl get pods
+  420  kubectl rollout --help
+  421  kubectl rollout history deployment deployment-with-1-container 
+  422  kubectl get pods -o wide
+  425  kubectl apply -f deployment-with-1-container-limit-ranges.yml --record
+  426  kubectl rollout status deployment deployment-with-1-container 
+  427  kubectl get limits
+  428  kubectl get pods
+  429  kubectl get pods -o wide
+  431  kubectl rollout history deployment deployment-with-1-container 
+  433  kubectl rollout history deployment deployment-with-1-container -o='yaml'
+  435  kubectl rollout undo deployment deployment-with-1-container --to-revision=1
+  436  kubectl get pods -o wide
+  442  kubectl rollout history deployment deployment-with-1-container -o='yaml'
+  443  kubectl rollout history deployment deployment-with-1-container
