@@ -442,3 +442,117 @@ NAME                                           READY   STATUS    RESTARTS   AGE
 deployment-with-1-container-66d7d764fb-xlb8g   1/1     Running   0          2m32s
 deployment-with-1-container-66d7d764fb-zfxmf   1/1     Running   0          2m32s
 ```
+
+To remove limits:
+```
+[kubernetes@kubemaster projects]$ kubectl delete limits limit-mem-cpu-per-pod 
+limitrange "limit-mem-cpu-per-pod" deleted
+```
+
+To check the status of a Pod:
+```
+kubectl describe pod deployment-with-1-container-989f9b6dd-t4lkd
+```
+
+We can see the rollout:
+```
+kubectl rollout status deployment deployment-with-1-container 
+
+```
+
+And our history:
+```
+[kubernetes@kubemaster projects]$ kubectl rollout history deployment deployment-with-1-container 
+deployment.apps/deployment-with-1-container 
+REVISION  CHANGE-CAUSE
+1         kubectl apply --filename=deployment-with-1-container-limit-ranges.yml --record=true
+2         kubectl apply --filename=deployment-with-1-container-limit-ranges.yml --record=true
+```
+If we need more details:
+```
+[kubernetes@kubemaster projects]$ kubectl rollout history deployment deployment-with-1-container -o='yaml'
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "2"
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"kubernetes.io/change-cause":"kubectl apply --filename=deployment-with-1-container-limit-ranges.yml --record=true"},"labels":{"department":"engineering"},"name":"deployment-with-1-container","namespace":"default"},"spec":{"minReadySeconds":30,"replicas":2,"selector":{"matchLabels":{"app":"frontend"}},"strategy":{"rollingUpdate":{"maxSurge":1,"maxUnavailable":1},"type":"RollingUpdate"},"template":{"metadata":{"labels":{"app":"frontend"}},"spec":{"containers":[{"image":"tomcat:7","name":"tomcat","ports":[{"containerPort":8080}],"resources":{"limits":{"cpu":"1000m","memory":"600Mi"},"requests":{"cpu":"500m","memory":"512Mi"}}}]}}}}
+    kubernetes.io/change-cause: kubectl apply --filename=deployment-with-1-container-limit-ranges.yml
+      --record=true
+  creationTimestamp: "2019-12-19T12:42:44Z"
+  generation: 2
+  labels:
+    department: engineering
+  name: deployment-with-1-container
+  namespace: default
+  resourceVersion: "102714"
+  selfLink: /apis/apps/v1/namespaces/default/deployments/deployment-with-1-container
+  uid: 9c7400b5-4c67-494e-abd7-242ee1540a72
+spec:
+  minReadySeconds: 30
+  progressDeadlineSeconds: 600
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: frontend
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - image: tomcat:7
+        imagePullPolicy: IfNotPresent
+        name: tomcat
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources:
+          limits:
+            cpu: "1"
+            memory: 600Mi
+          requests:
+            cpu: 500m
+            memory: 512Mi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 2
+  conditions:
+  - lastTransitionTime: "2019-12-19T12:43:16Z"
+    lastUpdateTime: "2019-12-19T12:43:16Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2019-12-19T13:08:04Z"
+    lastUpdateTime: "2019-12-19T13:08:34Z"
+    message: ReplicaSet "deployment-with-1-container-989f9b6dd" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  observedGeneration: 2
+  readyReplicas: 2
+  replicas: 2
+  updatedReplicas: 2
+
+```
+
+To apply the rollback to v1:
+```
+kubectl rollout undo deployment deployment-with-1-container --to-revision=1
+```
+

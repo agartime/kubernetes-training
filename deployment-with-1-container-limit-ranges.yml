@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
         - name: tomcat
-          image: tomcat:alpine
+          image: tomcat:7
           ports: 
             - containerPort: 8080
           resources:
