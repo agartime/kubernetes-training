@@ -84,3 +84,32 @@ Events:
   Warning  FailedScheduling  66s (x2 over 66s)  default-scheduler  0/3 nodes are available: 3 node(s) didn't match node selector.
 
 ``` 
+
+If we create the label later in the future, the container will start.
+```
+[kubernetes@kubemaster projects]$ kubectl label nodes kubeminion1 app=pakito --overwrite
+node/kubeminion1 labeled
+[kubernetes@kubemaster projects]$ kubectl get pods -o wide
+NAME                  READY   STATUS              RESTARTS   AGE     IP          NODE          NOMINATED NODE   READINESS GATES
+pod-to-backend        1/1     Running             0          15m     10.47.0.1   kubeminion2   <none>           <none>
+pod-to-frontend       1/1     Running             0          15m     10.44.0.1   kubeminion1   <none>           <none>
+pod-to-unknown-node   0/1     ContainerCreating   0          6m24s   <none>      kubeminion1   <none>           <none>
+[kubernetes@kubemaster projects]$ kubectl get pods -o wide
+NAME                  READY   STATUS              RESTARTS   AGE     IP          NODE          NOMINATED NODE   READINESS GATES
+pod-to-backend        1/1     Running             0          16m     10.47.0.1   kubeminion2   <none>           <none>
+pod-to-frontend       1/1     Running             0          16m     10.44.0.1   kubeminion1   <none>           <none>
+pod-to-unknown-node   0/1     ContainerCreating   0          6m34s   <none>      kubeminion1   <none>           <none>
+[kubernetes@kubemaster projects]$ kubectl get pods -o wide
+NAME                  READY   STATUS              RESTARTS   AGE    IP          NODE          NOMINATED NODE   READINESS GATES
+pod-to-backend        1/1     Running             0          16m    10.47.0.1   kubeminion2   <none>           <none>
+pod-to-frontend       1/1     Running             0          16m    10.44.0.1   kubeminion1   <none>           <none>
+pod-to-unknown-node   0/1     ContainerCreating   0          7m7s   <none>      kubeminion1   <none>           <none>
+[kubernetes@kubemaster projects]$ kubectl get pods -o wide
+NAME                  READY   STATUS    RESTARTS   AGE     IP          NODE          NOMINATED NODE   READINESS GATES
+pod-to-backend        1/1     Running   0          17m     10.47.0.1   kubeminion2   <none>           <none>
+pod-to-frontend       1/1     Running   0          17m     10.44.0.1   kubeminion1   <none>           <none>
+pod-to-unknown-node   1/1     Running   0          7m34s   10.44.0.2   kubeminion1   <none>           <none>
+[kubernetes@kubemaster projects]$ vi README.md 
+```
+
+
