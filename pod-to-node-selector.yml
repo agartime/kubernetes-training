@@ -1,6 +1,19 @@
 apiVersion: v1
 kind: Pod
 metadata:
+  name: pod-to-unknown-node
+spec:
+  containers:
+    - name: tomcat
+      image: tomcat:alpine
+      ports:
+      - containerPort: 8080
+  nodeSelector:
+    app: pakito
+---
+apiVersion: v1
+kind: Pod
+metadata:
   name: pod-to-backend
 spec:
   containers:
@@ -23,4 +36,3 @@ spec:
       - containerPort: 80
   nodeSelector:
     app: frontend
-
