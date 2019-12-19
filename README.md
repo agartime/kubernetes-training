@@ -145,3 +145,64 @@ spec:
   - name: nginx-with-node-affinity
     image: nginx:latest
 ``` 
+
+# Replication
+
+Let's create our first deployment using replication.
+``` 
+[kubernetes@kubemaster projects]$ cat deployment-with-1-container.yml 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-with-1-container
+  labels:
+    department: engineering
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: tomcat
+          image: tomcat:alpine
+          ports: 
+            - containerPort: 8080
+[kubernetes@kubemaster projects]$ kubectl delete pods --all
+pod "pod-to-backend" deleted
+pod "pod-to-frontend" deleted
+pod "pod-to-unknown-node" deleted
+pod "pod-with-node-affinity" deleted
+[kubernetes@kubemaster projects]$ kubectl get pods
+No resources found in default namespace.
+[kubernetes@kubemaster projects]$ kubectl get pods ño wide
+Error from server (NotFound): pods "ño" not found
+Error from server (NotFound): pods "wide" not found
+[kubernetes@kubemaster projects]$ kubectl get pods -o wide
+No resources found in default namespace.
+[kubernetes@kubemaster projects]$ kubectl apply -f deployment-with-1-container.yml 
+deployment.apps/deployment-with-1-container created
+[kubernetes@kubemaster projects]$ kubectl get pods -o wide
+NAME                                           READY   STATUS    RESTARTS   AGE   IP          NODE          NOMINATED NODE   READINESS GATES
+deployment-with-1-container-697bfb9dd7-h4s97   1/1     Running   0          5s    10.44.0.1   kubeminion1   <none>           <none>
+deployment-with-1-container-697bfb9dd7-jvd5r   1/1     Running   0          5s    10.47.0.1   kubeminion2   <none>           <none>
+```
+
+To check our deployments:
+```
+[kubernetes@kubemaster projects]$ kubectl get deployments
+NAME                          READY   UP-TO-DATE   AVAILABLE   AGE
+deployment-with-1-container   2/2     2            2           108s
+[kubernetes@kubemaster projects]$ 
+```
+
+To check our Replica Set:
+```
+[kubernetes@kubemaster projects]$ kubectl get rs
+NAME                                     DESIRED   CURRENT   READY   AGE
+deployment-with-1-container-697bfb9dd7   2         2         2       3m7s
+```
