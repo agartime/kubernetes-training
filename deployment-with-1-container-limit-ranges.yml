@@ -17,6 +17,7 @@ metadata:
     department: engineering
 spec:
   replicas: 2
+  minReadySeconds: 30
   selector:
     matchLabels:
       app: frontend
